@@ -2,6 +2,7 @@ import React, {ChangeEvent, useState} from 'react';
 
 type EditableSpanPropsType = {
     title: string
+    callBack: (newTitle:string)=> void
 }
 
 export const EditableSpan = (props: EditableSpanPropsType) => {
@@ -20,6 +21,7 @@ export const EditableSpan = (props: EditableSpanPropsType) => {
     };
     const turnOffHandler = ()=> {
         setEdit(false)
+        props.callBack(newTitle)
     }
 
     return (

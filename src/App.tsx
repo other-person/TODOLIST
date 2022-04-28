@@ -20,7 +20,7 @@ function App() {
     let todolistId1 = v1();
     let todolistId2 = v1();
 
-    let [todolists, setTodolists] = useState<Array<TodolistType>>([
+    let [todolists, setTodoLists] = useState<Array<TodolistType>>([
         {id: todolistId1, title: "What to learn", filter: "all"},
         {id: todolistId2, title: "What to buy", filter: "all"}
     ])
@@ -73,13 +73,13 @@ function App() {
         let todolist = todolists.find(tl => tl.id === todolistId);
         if (todolist) {
             todolist.filter = value;
-            setTodolists([...todolists])
+            setTodoLists([...todolists])
         }
     }
 
     function removeTodolist(id: string) {
         // засунем в стейт список тудулистов, id которых не равны тому, который нужно выкинуть
-        setTodolists(todolists.filter(tl => tl.id != id));
+        setTodoLists(todolists.filter(tl => tl.id != id));
         // удалим таски для этого тудулиста из второго стейта, где мы храним отдельно таски
         delete tasks[id]; // удаляем св-во из объекта... значением которого являлся массив тасок
         // засетаем в стейт копию объекта, чтобы React отреагировал перерисовкой
@@ -89,8 +89,17 @@ function App() {
     const addTodoList = (newTitle: string) => {
         let newID = v1();
         let newTodoList:TodolistType = {id: newID, title: newTitle, filter: "all"}
-        setTodolists([newTodoList, ...todolists])
+        setTodoLists([newTodoList, ...todolists])
         setTasks( {...tasks, [newID]: [ ] })
+    }
+    // обновление задач даблкликом
+    const updateTask = (todolistID: string, taskID:string, newTitle: string) => {
+        setTasks({...tasks, [todolistID]:tasks[todolistID].map((el)=> el.id=== taskID ? {...el,title: newTitle} : el)})
+    }
+
+    // обновление тайтла
+    const updateTodolistTitle = (todolistID: string, newTitle: string) => {
+        setTodoLists(todolists.map(el=> el.id === todolistID ? {...el, title: newTitle} : el))
     }
 
     return (
@@ -121,6 +130,8 @@ function App() {
                         changeTaskStatus={changeStatus}
                         filter={tl.filter}
                         removeTodolist={removeTodolist}
+                        updateTask={updateTask}
+                        updateTodolistTitle={updateTodolistTitle}
                     />
                 })
             }
