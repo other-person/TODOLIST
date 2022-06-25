@@ -76,11 +76,10 @@ export function Todolist(props: PropsType) {
                 })
             }
         </div>
-        <div style={{ paddingTop: "10px"}}>
+        <div>
             <Button variant={props.filter === 'all' ? 'outlined' : 'text'}
                     onClick={onAllClickHandler}
-                    color={'default'}
-            >All
+                    color={'inherit'}>All
             </Button>
             <Button variant={props.filter === 'active' ? 'outlined' : 'text'}
                     onClick={onActiveClickHandler}
